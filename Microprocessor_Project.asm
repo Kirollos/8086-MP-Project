@@ -1,8 +1,3 @@
-;init:
-;mov ax, 0
-;mov bx, 0
-;mov cx, 0
-
 ;start:
 ;in AL,00h;110
 ;cmp al, 0
@@ -21,6 +16,25 @@
 ;zerocandstart:
 ;mov cl, 0
 ;jmp start
+
+delayloop macro timedelay
+    
+    mov bx, timedelay
+    dec bx
+    nop
+    jnz $-2
+    
+endm
+
+init:           ;
+mov ax, 05h     ;
+mov bx, 0       ; Initialize the system by resetting all registers
+mov cx, 0       ;
+out 00h, AL     ; Count from five to zero as an indication for us
+delayloop 03644h; to make sure that the Microprocessor successfully
+dec al          ; initiated.
+jnz $-11        ;
+out 00h, AL     ;
      
 start:     
 in AL,00h
@@ -28,9 +42,9 @@ cmp al, 0
 ; if zero
 jz $+6   ; next v
 ; if non zero   v
-or cl, al    ;  <
-jmp start
-cmp cl, 0
+or cl, al    ;  v
+jmp start    ;  v
+cmp cl, 0    ;  <
 jz start
 cmp cl, 11h ; 10001b
 jz counterinit
@@ -68,10 +82,11 @@ xchg ah, al     ;
     
 loop_increment: ; Increment loop
      
-    mov bx, 0251ch;01644h   ; 
-    dec bx                  ;  Delay loop
-    nop                     ;
-    jnz $-2                 ;
+;    mov bx, 0251ch;01644h   ; 
+;    dec bx                  ;  Delay loop
+;    nop                     ;
+;    jnz $-2                 ;
+    delayloop 0251ch
     
     xchg cx, ax                         ; Input command retrieved
     in al, 00h                          ; in case we have
@@ -119,17 +134,19 @@ out 00h, al               ; Output to port 00h
 cmp al, 0FFh              ; If counter did not reach 255 decimal
 jnz loop_increment        ; yet, then jump back to loop_increment
 
-    mov bx, 03644h        ;
-        dec bx            ;  Delay loop
-        nop               ;
-        jnz $-2           ;           
+;    mov bx, 03644h        ;
+;        dec bx            ;  Delay loop
+;        nop               ;
+;        jnz $-2           ;   
+    delayloop 03644h        
         
 loop_decrement: ; Decrement loop
 
-    mov bx, 0251ch;01644h ;
-    dec bx                ; Delay loop
-    nop                   ;
-    jnz $-2               ;
+;    mov bx, 0251ch;01644h ;
+;    dec bx                ; Delay loop
+;    nop                   ;
+;    jnz $-2               ;     
+    delayloop 0251ch
     
     xchg cx, ax                         ; Input command retrieved
     in al, 00h                          ; in case we have
@@ -182,10 +199,11 @@ jnz loop_decrement        ; yet, then jump back to loop_decrement
 ;out 00h, al                ; ^^^^^^^^^^^^^
 
 
-    mov bx, 0251ch;01644h       ;
-    dec bx                      ; Delay loop
-    nop                         ;
-    jnz $-2                     ;
+;    mov bx, 0251ch;01644h       ;
+;    dec bx                      ; Delay loop
+;    nop                         ;
+;    jnz $-2                     ;
+    delayloop 0251ch
 
 cmp al, 0
 jz loop_increment
