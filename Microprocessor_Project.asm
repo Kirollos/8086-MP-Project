@@ -27,14 +27,13 @@ delayloop macro timedelay
 endm
 
 init:           ;
-mov ax, 05h     ;
+mov ax, 01FFh   ;
 mov bx, 0       ; Initialize the system by resetting all registers
-mov cx, 0       ;
-out 00h, AL     ; Count from five to zero as an indication for us
+mov cx, 0       ; Count from five to zero as an indication for us
 delayloop 03644h; to make sure that the Microprocessor successfully
-dec al          ; initiated.
-jnz $-11        ;
+shr ax, 1       ; initiated.
 out 00h, AL     ;
+jnz $-11        ;
      
 start:     
 in AL,00h
