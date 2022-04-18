@@ -1,3 +1,5 @@
+;Kirollos Nashaat   (kirollos.nashaat@hotmail.com)
+;                   <kirollos.nashaat@h-eng.helwan.edu.eg>
 ;start:
 ;in AL,00h;110
 ;cmp al, 0
@@ -194,8 +196,6 @@ out 00h, al               ; Output to port 00h
 cmp al, 0                 ; If counter did not reach 0 decimal
 jnz loop_decrement        ; yet, then jump back to loop_decrement
 
-;mov al, 0                  ; TO BE REMOVED
-;out 00h, al                ; ^^^^^^^^^^^^^
 
 
 ;    mov bx, 0251ch;01644h       ;
@@ -210,16 +210,3 @@ jz loop_increment
 jmp start
 ;mov al, 0
 ;out 00h, al                     
-
-
-;delayloop proc
-;    cmp bx, 0
-;    jnz $+5          ;>v
-;    mov bx, 0251ch   ; v
-;                     ; v
-;    dec bx      ;<   <<
-;    nop         ; ^
-;    jnz $-2     ;>^
-;    ;ret
-;    jmp bp
-;delayloop endp
